@@ -1,6 +1,8 @@
 
 package com.arokace.games;
 
+import java.util.Arrays;
+
 public class Board {
 
     // Game Board description
@@ -82,9 +84,21 @@ public class Board {
     }
 
     public void displayMovableLocations(int x, int y) {
-        if(getPieceType(x, y).equals("R")) {
-            rookMoves(x, y);
+        String[][] temp = new String[8][8];
+        for(int i = 0; i < gameBoard.length; i++) {
+            System.arraycopy(gameBoard[i], 0, temp[i], 0, gameBoard.length);
         }
+
+        String pieceType = getPieceType(x, y);
+
+        if(pieceType.equals("R")) {
+            rookMoves(x, y);
+        } else if(pieceType.equals("N")) {
+            knightMoves(x,y);
+        }
+
+        gameBoard = temp;
+        //displayBoard();
     }
 
     private void rookMoves(int x, int y) {
@@ -133,8 +147,25 @@ public class Board {
         displayBoard();
     }
 
+    private void knightMoves(int x, int y) {
+        System.out.println("Knight Moves");
+
+
+    }
+
 
     public void displayBoard() {
+        for(int i = 0; i < gameBoard.length; i++) {
+            StringBuilder row = new StringBuilder((gameBoard.length - i) + " | ");
+            for (String[] strings : gameBoard) {
+                row.append(strings[i]);
+            }
+            System.out.println(row);
+        }
+        System.out.println("     A   B   C   D   E   F   G   H");
+    }
+
+    public void displayBoard(String[][] gameBoard) {
         for(int i = 0; i < gameBoard.length; i++) {
             StringBuilder row = new StringBuilder((gameBoard.length - i) + " | ");
             for (String[] strings : gameBoard) {
