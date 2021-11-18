@@ -103,16 +103,14 @@ public class Board {
             System.arraycopy(gameBoard[i], 0, temp[i], 0, gameBoard.length);
         }
 
-        switch(getPieceType(x, y)) {
-            case 'R':
-                rookMoves(x, y);
-            case 'N':
-                knightMoves(x, y);
-            case 'B':
-                bishopMoves(x, y);
-            default:
+        switch (getPieceType(x, y)) {
+            case 'R' -> rookMoves(x, y);
+            case 'N' -> knightMoves(x, y);
+            case 'B' -> bishopMoves(x, y);
+            default -> {
                 System.out.println("Error!  Something went wrong!");
-                System.out.println("Piece Type: " + getPieceType(x,y) + " | x: " + x + " | y: " + y);
+                System.out.println("Piece Type: " + getPieceType(x, y) + " | x: " + x + " | y: " + y);
+            }
         }
 
         gameBoard = temp;
@@ -199,7 +197,41 @@ public class Board {
     }
 
     private void bishopMoves(int x, int y) {
+        System.out.println("Bishop Moves");
 
+        for(int i = 0; i < gameBoard.length - x ; i++) {
+            if(y + i <= gameBoard.length - 1) {
+                if(movableLocations(x + i, y + i)) {
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i <= x; i++) {
+            if(y + i <= gameBoard.length - 1) {
+                if(movableLocations(x - i, y + i)) {
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i < gameBoard.length - x; i++) {
+            if(y - i >= 0) {
+                if(movableLocations(x + i, y - i)) {
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i <= x; i++) {
+            if(y - i >= 0) {
+                if(movableLocations(x - i, y - i)) {
+                    break;
+                }
+            }
+        }
+
+        displayBoard();
     }
 
     public void displayBoard() {
