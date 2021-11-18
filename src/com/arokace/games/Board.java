@@ -192,7 +192,6 @@ public class Board {
         displayBoard();
     }
 
-
     public void displayBoard() {
         for(int i = 0; i < gameBoard.length; i++) {
             StringBuilder row = new StringBuilder((gameBoard.length - i) + " | ");
