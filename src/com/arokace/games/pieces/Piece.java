@@ -1,4 +1,4 @@
-package com.arokace.games;
+package com.arokace.games.pieces;
 
 public class Piece {
 

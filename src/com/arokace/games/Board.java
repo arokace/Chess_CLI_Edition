@@ -109,6 +109,7 @@ public class Board {
             case 'B' -> bishopMoves(x, y);
             case 'Q' -> queenMoves(x, y);
             case 'K' -> kingMoves(x, y);
+            case 'P' -> pawnMoves(x, y);
             default -> {
                 System.out.println("Error!  Something went wrong!");
                 System.out.println("Piece Type: " + getPieceType(x, y) + " | x: " + x + " | y: " + y);
@@ -268,6 +269,10 @@ public class Board {
         if(yInBoundsNegative && xInBoundsPositive) {
             movableLocations(x + 1, y - 1);
         }
+    }
+
+    private void pawnMoves(int x, int y) {
+
     }
 
     public void displayBoard() {
