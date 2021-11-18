@@ -107,14 +107,16 @@ public class Board {
             case 'R' -> rookMoves(x, y);
             case 'N' -> knightMoves(x, y);
             case 'B' -> bishopMoves(x, y);
+            case 'Q' -> queenMoves(x, y);
             default -> {
                 System.out.println("Error!  Something went wrong!");
                 System.out.println("Piece Type: " + getPieceType(x, y) + " | x: " + x + " | y: " + y);
             }
         }
 
+
+        displayBoard();
         gameBoard = temp;
-        //displayBoard();
     }
 
     private void rookMoves(int x, int y) {
@@ -143,8 +145,6 @@ public class Board {
                 break;
             }
         }
-
-        displayBoard();
     }
 
     private void knightMoves(int x, int y) {
@@ -192,8 +192,6 @@ public class Board {
             }
 
         }
-
-        displayBoard();
     }
 
     private void bishopMoves(int x, int y) {
@@ -230,8 +228,13 @@ public class Board {
                 }
             }
         }
+    }
 
-        displayBoard();
+    private void queenMoves(int x, int y) {
+        System.out.println("Queen Moves");
+
+        rookMoves(x, y);
+        bishopMoves(x, y);
     }
 
     public void displayBoard() {
