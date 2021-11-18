@@ -1,8 +1,11 @@
 
 package com.arokace.games;
 
+import com.arokace.games.pieces.*;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 public class Board {
 
@@ -29,11 +32,18 @@ public class Board {
     // __ - Empty Space
 
     String[][] gameBoard = new String[8][8];
-    private char currentPlayer, enemy;
+    Piece[][] pieces = new Piece[2][16]; // 0 - Black | 1 - White
+    Piece[] whitePieces = new Piece[16];
+    Piece[] blackPieces = new Piece[16];
+
+    private int[] selection = new int[2];
+
+    private char currentPlayer1, enemy;
+
+    private int currentPlayer;
 
     public Board() {
-        currentPlayer = 'w';
-        enemy = 'b';
+        currentPlayer = 1;
     }
 
     public void createBoard() {
@@ -41,46 +51,74 @@ public class Board {
 
         for(int i = 0; i < length; i++) {
             if(i % length == 0) {
-                gameBoard[0][i] = " bR ";
-                gameBoard[1][i] = " bN ";
-                gameBoard[2][i] = " bB ";
-                gameBoard[3][i] = " bQ ";
-                gameBoard[4][i] = " bK ";
-                gameBoard[5][i] = " bB ";
-                gameBoard[6][i] = " bN ";
-                gameBoard[7][i] = " bR ";
+                pieces[0][0] = new Rook('b', 0, i);
+                pieces[0][1] = new Knight('b', 1, i);
+                pieces[0][2] = new Bishop('b', 2, i);
+                pieces[0][3] = new Queen('b', 3, i);
+                pieces[0][4] = new King('b', 4, i);
+                pieces[0][5] = new Bishop('b', 5, i);
+                pieces[0][6] = new Knight('b', 6, i);
+                pieces[0][7] = new Rook('b', 7, i);
+//                blackPieces[0] = new Rook('b', 0, i);
+//                blackPieces[1] = new Knight('b', 1, i);
+//                blackPieces[2] = new Bishop('b', 2, i);
+//                blackPieces[3] = new Queen('b', 3, i);
+//                blackPieces[4] = new King('b', 4, i);
+//                blackPieces[5] = new Bishop('b', 5, i);
+//                blackPieces[6] = new Knight('b', 6, i);
+//                blackPieces[7] = new Rook('b', 7, i);
             } else if (i % length == 7) {
-                gameBoard[0][i] = " wR ";
-                gameBoard[1][i] = " wN ";
-                gameBoard[2][i] = " wB ";
-                gameBoard[3][i] = " wQ ";
-                gameBoard[4][i] = " wK ";
-                gameBoard[5][i] = " wB ";
-                gameBoard[6][i] = " wN ";
-                gameBoard[7][i] = " wR ";
+                pieces[1][0] = new Rook('w', 0, i);
+                pieces[1][1] = new Knight('w', 1, i);
+                pieces[1][2] = new Bishop('w', 2, i);
+                pieces[1][3] = new Queen('w', 3, i);
+                pieces[1][4] = new King('w', 4, i);
+                pieces[1][5] = new Bishop('w', 5, i);
+                pieces[1][6] = new Knight('w', 6, i);
+                pieces[1][7] = new Rook('w', 7, i);
+//                whitePieces[0] = new Rook('w', 0, i);
+//                whitePieces[1] = new Knight('w', 1, i);
+//                whitePieces[2] = new Bishop('w', 2, i);
+//                whitePieces[3] = new Queen('w', 3, i);
+//                whitePieces[4] = new King('w', 4, i);
+//                whitePieces[5] = new Bishop('w', 5, i);
+//                whitePieces[6] = new Knight('w', 6, i);
+//                whitePieces[7] = new Rook('w', 7, i);
             } else {
                 for (int j = 0; j < length; j++) {
                     if (i == 1) {
-                        gameBoard[j][i] = " bP ";
+                        pieces[0][8 + j] = new Pawn('b', j, i);
+//                        blackPieces[8 + j] = new Pawn('b', j, i);
                     } else if (i == 6) {
-                        gameBoard[j][i] = " __ ";
-                    } else {
-                        gameBoard[j][i] = " __ ";
+                        pieces[1][8 + j] = new Pawn('w', j, i);
+//                        whitePieces[8 + j] = new Pawn('w', j, i);
                     }
                 }
             }
         }
+
+        for(int i = 0; i < length; i++) {
+            gameBoard[i][0] = " " + blackPieces[i].getPiece() + " ";
+            gameBoard[i][1] = " " + blackPieces[8 + i].getPiece() + " ";
+
+            for(int j = 2; j < 7; j++) {
+                gameBoard[i][j] = " __ ";
+            }
+
+            //gameBoard[i][6] = " " + whitePieces[8 + i].getPiece() + " ";
+            gameBoard[i][7] = " " + whitePieces[i].getPiece() + " ";
+        }
     }
 
-    public char getCurrentPlayer() {
+    public int getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public boolean checkValidChoice(int x, int y) {
-        //Log/Debug
-        //System.out.println("X: " + x + " | Y: " + y + " | S Player: " + gameBoard[x][y].charAt(1));
-        return gameBoard[x][y].charAt(1) == currentPlayer;
-    }
+//    public boolean checkValidChoice(int x, int y) {
+//        //Log/Debug
+//        //System.out.println("X: " + x + " | Y: " + y + " | S Player: " + gameBoard[x][y].charAt(1));
+//        return gameBoard[x][y].charAt(1) == currentPlayer;
+//    }
 
     private boolean movableLocations(int x, int y) {
         if(gameBoard[x][y].equals(" __ ")) {
@@ -93,15 +131,58 @@ public class Board {
         return false;
     }
 
-    private char getPieceType(int x, int y) {
-        return gameBoard[x][y].charAt(2);
+//    private char getPieceType(int x, int y) {
+//        return gameBoard[x][y].charAt(2);
+//    }
+
+    private int findPiece() {
+        for(int i = 0; i < pieces[currentPlayer].length; i++) {
+            if (pieces[currentPlayer][i].getX() == selection[0] && pieces[currentPlayer][i].getY() == selection[1]) {
+                pieces[currentPlayer][i].setSelected(true);
+                return i;
+            }
+        }
+
+//        if(currentPlayer == 'w') {
+//            for(int i = 0; i < whitePieces.length; i++) {
+//                if (whitePieces[i].getX() == selection[0] && whitePieces[i].getY() == selection[1]) {
+//                    whitePieces[i].setSelected(true);
+//                    return i;
+//                }
+//            }
+//        } else if (currentPlayer == 'b') {
+//            for(int i = 0; i < blackPieces.length; i++) {
+//                if (blackPieces[i].getX() == selection[0] && blackPieces[i].getY() == selection[1]) {
+//                    blackPieces[i].setSelected(true);
+//                    return i;
+//                }
+//            }
+//        }
+
+        return -1;
+    }
+
+    private void selectPiece() {
+        int pieceIndex = findPiece();
+
+        if(pieceIndex == -1) {
+            System.out.println("Invalid Selection!");
+        } else if (pieceIndex >= 0 && pieceIndex <= pieces[currentPlayer].length) {
+
+        }
     }
 
     public void displayMovableLocations(int x, int y) {
         String[][] temp = new String[8][8];
+
+        selection[0] = x;
+        selection[1] = y;
+
         for(int i = 0; i < gameBoard.length; i++) {
             System.arraycopy(gameBoard[i], 0, temp[i], 0, gameBoard.length);
         }
+
+        selectPiece();
 
         switch (getPieceType(x, y)) {
             case 'R' -> rookMoves(x, y);

@@ -2,12 +2,16 @@ package com.arokace.games.pieces;
 
 public class Piece {
 
-    private int x, y;
+    protected int x, y;
     private final char type, side;
+    protected boolean selected;
+    protected boolean alive;
 
     public Piece(char type, char side) {
         this.type = type;
         this.side = side;
+        selected = false;
+        alive = true;
     }
 
     public int[] movePiece(int newX, int newY) {
@@ -20,7 +24,27 @@ public class Piece {
         return String.valueOf(new char[] {side, type});
     }
 
-    public int[] getLocation() {
-        return new int[] {x, y};
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
+
+    public char getSide() {
+        return side;
+    }
+
+    public char getType() {
+        return type;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    //    public int[] getLocation() {
+//        return new int[] {x, y};
+//    }
 }

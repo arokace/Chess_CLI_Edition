@@ -1,7 +1,9 @@
 package com.arokace.games.pieces;
 
 public class Rook extends Piece {
-    public Rook(char type, char side) {
-        super(type, side);
+    public Rook(char side, int xStartLoc, int yStartLoc) {
+        super('R', side);
+        x = xStartLoc;
+        y = yStartLoc;
     }
 }

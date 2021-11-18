@@ -31,13 +31,13 @@ public class Game {
                     System.out.println("X: " + pieceX + " | Y: " + pieceY + " | Current Player: " + board.getCurrentPlayer());
 
                     if(pieceX >= 0 && pieceX <= 8 && pieceY >= 0 && pieceY <= 8) {
-                        if(board.checkValidChoice(pieceX, pieceY)) {
-                            //Log/Debug
-                            //System.out.println("Hi");
-
-                            board.displayMovableLocations(pieceX, pieceY);
-                            break;
-                        }
+//                        if(board.checkValidChoice(pieceX, pieceY)) {
+//                            //Log/Debug
+//                            //System.out.println("Hi");
+//
+//                            board.displayMovableLocations(pieceX, pieceY);
+//                            break;
+//                        }
                     } else {
                         System.out.println("Invalid selection");
                     }

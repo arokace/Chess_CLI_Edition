@@ -1,7 +1,9 @@
 package com.arokace.games.pieces;
 
 public class Knight extends Piece {
-    public Knight(char type, char side) {
-        super(type, side);
+    public Knight(char side, int xStartLoc, int yStartLoc) {
+        super('N', side);
+        x = xStartLoc;
+        y = yStartLoc;
     }
 }
