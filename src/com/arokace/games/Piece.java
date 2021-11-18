@@ -3,23 +3,24 @@ package com.arokace.games;
 public class Piece {
 
     private int x, y;
-    private String type, side;
+    private final char type, side;
 
-    public Piece(String type, String side) {
+    public Piece(char type, char side) {
         this.type = type;
         this.side = side;
     }
 
-    public void movePiece(int newX, int newY) {
+    public int[] movePiece(int newX, int newY) {
         x = newX;
         y = newY;
+        return new int[] {x, y};
     }
 
     public String getPiece() {
-        return side + type;
+        return String.valueOf(new char[] {side, type});
     }
 
-    public String getLocation() {
-        return x + ", " + y;
+    public int[] getLocation() {
+        return new int[] {x, y};
     }
 }

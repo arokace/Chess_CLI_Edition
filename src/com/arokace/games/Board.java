@@ -103,10 +103,16 @@ public class Board {
             System.arraycopy(gameBoard[i], 0, temp[i], 0, gameBoard.length);
         }
 
-        if(getPieceType(x, y) == 'R') {
-            rookMoves(x, y);
-        } else if(getPieceType(x, y) == 'N') {
-            knightMoves(x,y);
+        switch(getPieceType(x, y)) {
+            case 'R':
+                rookMoves(x, y);
+            case 'N':
+                knightMoves(x, y);
+            case 'B':
+                bishopMoves(x, y);
+            default:
+                System.out.println("Error!  Something went wrong!");
+                System.out.println("Piece Type: " + getPieceType(x,y) + " | x: " + x + " | y: " + y);
         }
 
         gameBoard = temp;
@@ -190,6 +196,10 @@ public class Board {
         }
 
         displayBoard();
+    }
+
+    private void bishopMoves(int x, int y) {
+
     }
 
     public void displayBoard() {
