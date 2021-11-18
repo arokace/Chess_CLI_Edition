@@ -6,15 +6,13 @@ public class Game {
 
     private Board board = new Board();
     private Scanner scanner = new Scanner(System.in);
-    private String currentPlayer;
 
     public Game() {
         board.createBoard();
         board.displayBoard();
-        currentPlayer = "w";
 
         while(true) {
-            System.out.println("Player turn: " + currentPlayer);
+            System.out.println("Player turn: " + board.getCurrentPlayer());
             System.out.println("1) Move Piece");
             System.out.println("2) Concede");
 
@@ -30,10 +28,10 @@ public class Game {
                     pieceX = scanner.nextInt();
                     System.out.print("Y: ");
                     pieceY = 7 - scanner.nextInt();
-                    System.out.println("X: " + pieceX + " | Y: " + pieceY + " | Current Player: " + currentPlayer);
+                    System.out.println("X: " + pieceX + " | Y: " + pieceY + " | Current Player: " + board.getCurrentPlayer());
 
                     if(pieceX >= 0 && pieceX <= 8 && pieceY >= 0 && pieceY <= 8) {
-                        if(board.checkValidChoice(pieceX, pieceY, currentPlayer)) {
+                        if(board.checkValidChoice(pieceX, pieceY)) {
                             //Log/Debug
                             //System.out.println("Hi");
 
@@ -50,10 +48,5 @@ public class Game {
                 System.out.println("Invalid Selection");
             }
         }
-    }
-
-    // Get the possible moves of a given piece
-    public void getMovableLocations() {
-
     }
 }

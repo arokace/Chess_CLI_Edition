@@ -1,7 +1,8 @@
 
 package com.arokace.games;
 
-import java.util.Arrays;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class Board {
 
@@ -28,9 +29,11 @@ public class Board {
     // __ - Empty Space
 
     String[][] gameBoard = new String[8][8];
+    private char currentPlayer, enemy;
 
     public Board() {
-
+        currentPlayer = 'w';
+        enemy = 'b';
     }
 
     public void createBoard() {
@@ -69,18 +72,29 @@ public class Board {
         }
     }
 
-    public boolean checkValidChoice(int x, int y, String currentPlayer) {
+    public char getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public boolean checkValidChoice(int x, int y) {
         //Log/Debug
         //System.out.println("X: " + x + " | Y: " + y + " | S Player: " + gameBoard[x][y].charAt(1));
-        return gameBoard[x][y].substring(1,2).equals(currentPlayer);
+        return gameBoard[x][y].charAt(1) == currentPlayer;
     }
 
-    private boolean checkForEmptySpace(int x, int y) {
-        return gameBoard[x][y].equals(" __ ");
+    private boolean movableLocations(int x, int y) {
+        if(gameBoard[x][y].equals(" __ ")) {
+            gameBoard[x][y] = "[__]";
+        } else if(gameBoard[x][y].charAt(1) == enemy) {
+            String temp = gameBoard[x][y].substring(1,3);
+            gameBoard[x][y] = "[" + temp + "]";
+            return true;
+        }
+        return false;
     }
 
-    private String getPieceType(int x, int y) {
-        return gameBoard[x][y].substring(2,3);
+    private char getPieceType(int x, int y) {
+        return gameBoard[x][y].charAt(2);
     }
 
     public void displayMovableLocations(int x, int y) {
@@ -89,11 +103,9 @@ public class Board {
             System.arraycopy(gameBoard[i], 0, temp[i], 0, gameBoard.length);
         }
 
-        String pieceType = getPieceType(x, y);
-
-        if(pieceType.equals("R")) {
+        if(getPieceType(x, y) == 'R') {
             rookMoves(x, y);
-        } else if(pieceType.equals("N")) {
+        } else if(getPieceType(x, y) == 'N') {
             knightMoves(x,y);
         }
 
@@ -105,41 +117,25 @@ public class Board {
         System.out.println("Rook Moves");
 
         for(int i = 0; i < gameBoard.length - x; i++) {
-            if(checkForEmptySpace(x + i, y)) {
-                gameBoard[x+i][y] = "[__]";
-            } else if(gameBoard[x+i][y].charAt(1) == 'b') {
-                String temp = gameBoard[x+i][y].substring(1,3);
-                gameBoard[x+i][y] = "[" + temp + "]";
+            if(movableLocations(x + i, y)) {
                 break;
             }
         }
 
         for(int i = 0; i <= x; i++) {
-            if(checkForEmptySpace(x - i, y)) {
-                gameBoard[x-i][y] = "[__]";
-            } else if(gameBoard[x-i][y].charAt(1) == 'b') {
-                String temp = gameBoard[x-i][y].substring(1,3);
-                gameBoard[x-i][y] = "[" + temp + "]";
+            if(movableLocations(x - i, y)) {
                 break;
             }
         }
 
-        for(int i = 0; i < gameBoard.length - x; i++) {
-            if(checkForEmptySpace(x + i, y)) {
-                gameBoard[x+i][y] = "[__]";
-            } else if(gameBoard[x+i][y].charAt(1) == 'b') {
-                String temp = gameBoard[x+i][y].substring(1,3);
-                gameBoard[x+i][y] = "[" + temp + "]";
+        for(int i = 0; i < gameBoard.length - y; i++) {
+            if(movableLocations(x, y + i)) {
                 break;
             }
         }
 
         for(int i = 0; i <= y; i++) {
-            if(checkForEmptySpace(x, y - i)) {
-                gameBoard[x][y-i] = "[__]";
-            } else if(gameBoard[x][y-i].charAt(1) == 'b') {
-                String temp = gameBoard[x][y-i].substring(1,3);
-                gameBoard[x][y-i] = "[" + temp + "]";
+            if(movableLocations(x, y - i)) {
                 break;
             }
         }
@@ -150,7 +146,50 @@ public class Board {
     private void knightMoves(int x, int y) {
         System.out.println("Knight Moves");
 
+        if(x + 2 <= 7) {
+            if(y + 1 <= 7) {
+                movableLocations(x + 2, y + 1);
+            }
 
+            if(y - 1 >= 0) {
+                movableLocations(x + 2, y - 1);
+            }
+        }
+
+        if(x - 2 >= 0) {
+            if(y + 1 <= 7) {
+                movableLocations(x - 2, y + 1);
+            }
+
+            if(y - 1 >= 0) {
+                movableLocations(x - 2, y - 1);
+            }
+
+        }
+
+        if(y + 2 <= 7) {
+            if(x + 1 <= 7) {
+                movableLocations(x + 1, y + 2);
+            }
+
+            if(x - 1 >= 0) {
+                movableLocations(x - 1, y + 2);
+            }
+
+        }
+
+        if(y - 2 >= 0) {
+            if(x + 1 <= 7) {
+                movableLocations(x + 1, y - 2);
+            }
+
+            if(x - 1 >= 0) {
+                movableLocations(x - 1, y - 2);
+            }
+
+        }
+
+        displayBoard();
     }
 
 
@@ -165,26 +204,15 @@ public class Board {
         System.out.println("     A   B   C   D   E   F   G   H");
     }
 
-    public void displayBoard(String[][] gameBoard) {
-        for(int i = 0; i < gameBoard.length; i++) {
-            StringBuilder row = new StringBuilder((gameBoard.length - i) + " | ");
-            for (String[] strings : gameBoard) {
-                row.append(strings[i]);
-            }
-            System.out.println(row);
-        }
-        System.out.println("     A   B   C   D   E   F   G   H");
-    }
-
-    public void movePiece(int currentX, int currentY, int newX, int newY, String currentPlayer) {
-        String newLocation = gameBoard[newX][newY];
-        String currentLocation = gameBoard[currentX][currentY];
-
-        if(!currentLocation.startsWith(currentPlayer)) {
-
-        } else if(newLocation.equals(" __ ") || !newLocation.startsWith(currentPlayer)) {
-            gameBoard[newX][newY] = currentLocation;
-            gameBoard[currentX][currentY] = " __ ";
-        }
-    }
+//    public void movePiece(int currentX, int currentY, int newX, int newY, String currentPlayer) {
+//        String newLocation = gameBoard[newX][newY];
+//        String currentLocation = gameBoard[currentX][currentY];
+//
+//        if(!currentLocation.startsWith(currentPlayer)) {
+//
+//        } else if(newLocation.equals(" __ ") || !newLocation.startsWith(currentPlayer)) {
+//            gameBoard[newX][newY] = currentLocation;
+//            gameBoard[currentX][currentY] = " __ ";
+//        }
+//    }
 }
