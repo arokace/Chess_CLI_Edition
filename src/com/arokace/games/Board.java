@@ -108,6 +108,7 @@ public class Board {
             case 'N' -> knightMoves(x, y);
             case 'B' -> bishopMoves(x, y);
             case 'Q' -> queenMoves(x, y);
+            case 'K' -> kingMoves(x, y);
             default -> {
                 System.out.println("Error!  Something went wrong!");
                 System.out.println("Piece Type: " + getPieceType(x, y) + " | x: " + x + " | y: " + y);
@@ -235,6 +236,38 @@ public class Board {
 
         rookMoves(x, y);
         bishopMoves(x, y);
+    }
+
+    private void kingMoves(int x, int y) {
+        boolean xInBoundsPositive = x + 1 <= 7;
+        boolean xInBoundsNegative = x - 1 >= 0;
+        boolean yInBoundsPositive = y + 1 <= 7;
+        boolean yInBoundsNegative = y - 1 >= 0;
+
+        if(xInBoundsPositive) {
+            movableLocations(x + 1, y);
+        }
+        if(xInBoundsPositive && yInBoundsPositive) {
+            movableLocations(x + 1, y + 1);
+        }
+        if(yInBoundsPositive) {
+            movableLocations(x, y + 1);
+        }
+        if(yInBoundsPositive && xInBoundsNegative) {
+            movableLocations(x - 1, y + 1);
+        }
+        if(xInBoundsNegative) {
+            movableLocations(x - 1, y);
+        }
+        if(xInBoundsNegative && yInBoundsNegative) {
+            movableLocations(x - 1, y - 1);
+        }
+        if(yInBoundsNegative) {
+            movableLocations(x, y - 1);
+        }
+        if(yInBoundsNegative && xInBoundsPositive) {
+            movableLocations(x + 1, y - 1);
+        }
     }
 
     public void displayBoard() {
